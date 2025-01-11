@@ -1,0 +1,34 @@
+header {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: baseline;
+    margin-top: 1rem;
+}
+nav {
+    width: 50%;
+    height: 100%;
+}
+
+#nav {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+#nav > li {
+    font-size: 21px;
+}
+#task, #aboutUs, #contact {
+    cursor: pointer;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 3.5px solid #333;
+    border-radius: 10px;
+}
+#task:hover, #aboutUs:hover, #contact:hover {
+    background-color: #333;
+    color: #fff;
+}
+#task:active, #aboutUs:active, #contact:active {
+    background-color: #ccc;
+    color: #333;
+}
