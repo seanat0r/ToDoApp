@@ -1,0 +1,48 @@
+/* Reset All Margin and Padding */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Remove text decoration */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Reset list style */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Reset table border */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Remove input and button default styles */
+input,
+button,
+select,
+textarea {
+  appearance: none;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+/* Reset the default body font */
+body {
+  font-family: sans-serif;
+  line-height: 1.5;
+  background-color: #fff;
+  color: #333;
+}
