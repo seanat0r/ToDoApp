@@ -45,4 +45,20 @@ body {
   line-height: 1.5;
   background-color: #fff;
   color: #333;
+  height: 100%;
+}
+
+main {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 100dvb;
+}
+.Empty {
+    text-decoration: none;
+    list-style: none;
+    font-style: italic;
+    text-align: center;
+}
+.Empty::before {
+    content: "📭 ";
 }

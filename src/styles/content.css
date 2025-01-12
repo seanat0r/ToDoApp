@@ -1,0 +1,5 @@
+/* Article class*/
+.content {
+    grid-column: 2 / 4;
+    padding: 0.5rem;
+}
