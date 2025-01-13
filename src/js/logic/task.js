@@ -7,14 +7,4 @@ export class Task {
     this.taskNotes = notes;
     this.taskChecklist = checklist;
   }
-/*get task () {
-    return {
-      title: this.taskTitle,
-      description: this.taskDescription,
-      dueDate: this.taskDueDate,
-      priority: this.taskPriority,
-      notes: this.taskNotes,
-      checklist: this.taskChecklist,
-    }
-  } */
 }

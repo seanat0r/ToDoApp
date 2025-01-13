@@ -1,4 +1,4 @@
-import { isValid } from "../../../node_modules/date-fns";
+import { isValid } from "../../../node_modules/date-fns/index.cjs";
 import { Task as createTaskObj } from "./task.js";
 import { allToDosArray as taskArray } from "../../index.js";
 
@@ -39,7 +39,7 @@ export class CreateTodo {
 		}
 		return true;
 	}
-	#createTodo(title, description, dueDate, priority, notes, checklist) {
+	createTodo(title, description, dueDate, priority, notes, checklist) {
 		let task = new createTaskObj(
 			title,
 			description,
@@ -48,7 +48,7 @@ export class CreateTodo {
 			notes,
 			checklist
 		);
-        // create a new task object
+		// create a new task object
 		console.log(task.taskTitle + " successfully created");
 		taskArray.push(task);
 	}
@@ -78,7 +78,7 @@ export class CreateTodo {
 		return checklistValue;
 	}
 	processToDo() {
-        console.log("Processing ToDo");
+		console.log("Processing ToDo");
 		let title = this.#setValueTitle();
 		let description = this.#setDescriptionValue();
 		let dueDate = this.#setDueDateValue();
@@ -96,7 +96,7 @@ export class CreateTodo {
 				checklist
 			)
 		) {
-			this.#createTodo(title, description, dueDate, priority, notes, checklist);
+			this.createTodo(title, description, dueDate, priority, notes, checklist);
 		} else {
 			console.log("Error in input");
 		}
