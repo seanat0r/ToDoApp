@@ -7,12 +7,13 @@ import "./styles/content.css";
 // Importing JS
 import { CreateTodo } from "./js/logic/createToDo.js";
 import DeleteTodo from "./js/logic/deleteToDo.js";
+import ChangeToDo from "./js/logic/changeToDo.js";
 
 export const allToDosArray = [];
 
 function settingAddTask() {
 	let addTask = new CreateTodo();
-	addTask.processToDo();
+	//addTask.processToDo();
     addTask.createTodo(
         "Task 1",
         "Description 1",
@@ -26,8 +27,13 @@ function settingDeleteTask() {
     let deleteTask = new DeleteTodo();
     deleteTask.processDeleteToDo();
 }
+function settingChangeTask() {
+    let changeTask = new ChangeToDo();
+    changeTask.processChangeToDo();
+}
 
 settingAddTask();
+settingChangeTask();
 
-settingDeleteTask();
+//settingDeleteTask();
 console.log(allToDosArray);
