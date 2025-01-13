@@ -7,7 +7,7 @@ export class Task {
     this.taskNotes = notes;
     this.taskChecklist = checklist;
   }
-  get task () {
+/*get task () {
     return {
       title: this.taskTitle,
       description: this.taskDescription,
@@ -16,5 +16,5 @@ export class Task {
       notes: this.taskNotes,
       checklist: this.taskChecklist,
     }
-  }
+  } */
 }
