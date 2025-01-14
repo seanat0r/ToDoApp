@@ -5,35 +5,47 @@ import "./styles/aside.css";
 import "./styles/content.css";
 
 // Importing JS
+import { Project } from "./js/logic/task.js";
 import { CreateTodo } from "./js/logic/createToDo.js";
 import DeleteTodo from "./js/logic/deleteToDo.js";
-import ChangeToDo from "./js/logic/changeToDo.js";
+import { ChangeToDo, ChangeTaskCheckList } from "./js/logic/changeToDo.js";
 
 export const allToDosArray = [];
+export const allProjectsArray = []
+
+
+function createNewProjects(name, task) {
+    
+    let newProjects = new Project(name, task)
+}
 
 function settingAddTask() {
 	let addTask = new CreateTodo();
 	//addTask.processToDo();
-    addTask.createTodo(
-        "Task 1",
-        "Description 1",
-        "2021-10-01",
-        "green",
-        "Notes 1",
-        true
-    );
+	addTask.createTodo(
+		"Task 1",
+		"Description 1",
+		"2021-10-01",
+		"green",
+		"Notes 1",
+		false
+	);
 }
 function settingDeleteTask() {
-    let deleteTask = new DeleteTodo();
-    deleteTask.processDeleteToDo();
+	let deleteTask = new DeleteTodo();
+	deleteTask.processDeleteToDo();
 }
 function settingChangeTask() {
-    let changeTask = new ChangeToDo();
-    changeTask.processChangeToDo();
+	let changeTask = new ChangeToDo();
+	changeTask.processChangeToDo();
+}
+function settingChangeCompletedTask() {
+	let completedTask = new ChangeTaskCheckList();
+	completedTask.processTaskCheckList();
 }
 
 settingAddTask();
-settingChangeTask();
-
+settingChangeCompletedTask();
+//settingChangeTask();
 //settingDeleteTask();
 console.log(allToDosArray);

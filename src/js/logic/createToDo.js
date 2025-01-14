@@ -1,18 +1,26 @@
 import { isValid } from "../../../node_modules/date-fns/index.cjs";
-import { Task as createTaskObj } from "./task.js";
+import { Task as createTaskObj, Project as CreateProjectObj } from "./task.js";
 import { allToDosArray as taskArray } from "../../index.js";
 
 export class CreateTodo {
-	#validateToDoInput(title, description, dueDate, priority, notes, checklist) {
+	#validateToDoInput(
+		title,
+		description,
+		dueDate,
+		priority,
+		notes,
+		checklist,
+		project
+	) {
 		if (typeof checklist !== "boolean" || checklist === null) {
 			console.log("Checklist must be a boolean");
 			return false;
 		}
 		if (
-			!priority === "green" ||
-			!priority === "yellow" ||
-			!priority === "red" ||
-			priority === null
+			priority !== "green" ||
+			priority !== "yellow" ||
+			priority !== "red" ||
+			priority !== null
 		) {
 			console.log("Priority must be green, yellow, or red");
 			return false;
@@ -20,8 +28,11 @@ export class CreateTodo {
 		if (
 			(typeof notes !== "string" &&
 				typeof description !== "string" &&
-				typeof title !== "string") ||
-			notes === null
+				typeof title !== "string" &&
+				typeof project !== "string") ||
+			notes === null ||
+			description === null ||
+			project === null
 		) {
 			console.log(
 				"Notes, description and string must be a string: " +
@@ -29,7 +40,9 @@ export class CreateTodo {
 					", " +
 					typeof description +
 					", " +
-					typeof title
+					typeof title +
+					", " +
+					typeof project
 			);
 			return false;
 		}
@@ -39,14 +52,15 @@ export class CreateTodo {
 		}
 		return true;
 	}
-	createTodo(title, description, dueDate, priority, notes, checklist) {
+	createTodo(title, description, dueDate, priority, notes, checklist, project) {
 		let task = new createTaskObj(
 			title,
 			description,
 			dueDate,
 			priority,
 			notes,
-			checklist
+			checklist,
+			project
 		);
 		// create a new task object
 		console.log(task.taskTitle + " successfully created");
@@ -77,6 +91,10 @@ export class CreateTodo {
 		let checklistValue = false; //placeholder for input
 		return checklistValue;
 	}
+	#setProjectValue() {
+		let projectValue = prompt("Enter the Project of the task"); //placeholder for input
+		return projectValue;
+	}
 	processToDo() {
 		console.log("Processing ToDo");
 		let title = this.#setValueTitle();
@@ -85,6 +103,7 @@ export class CreateTodo {
 		let priority = this.#setPriorityValue();
 		let notes = this.#setNotesValue();
 		let checklist = this.#setChecklistValue();
+		let project = this.#setProjectValue();
 
 		if (
 			this.#validateToDoInput(
@@ -93,12 +112,23 @@ export class CreateTodo {
 				dueDate,
 				priority,
 				notes,
-				checklist
+				checklist,
+				project
 			)
 		) {
-			this.createTodo(title, description, dueDate, priority, notes, checklist);
+			this.createTodo(
+				title,
+				description,
+				dueDate,
+				priority,
+				notes,
+				checklist,
+				project
+			);
 		} else {
 			console.log("Error in input");
 		}
 	}
 }
+
+
