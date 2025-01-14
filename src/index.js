@@ -14,9 +14,12 @@ export const allToDosArray = [];
 export const allProjectsArray = []
 
 
-function createNewProjects(name, task) {
-    
-    let newProjects = new Project(name, task)
+function createNewProjects(name) {
+    let newProjects = new Project(name)
+    allProjectsArray.push(newProjects);
+}
+function addTaskToProjects(WhichProject, ...task) {
+
 }
 
 function settingAddTask() {
