@@ -4,7 +4,7 @@ import "./styles/header.css";
 import "./styles/aside.css";
 import "./styles/content.css";
 
-// Importing JS
+// Importing JS-Logic
 import { Project } from "./js/logic/task.js";
 import { CreateTodo } from "./js/logic/createToDo.js";
 import DeleteTodo from "./js/logic/deleteToDo.js";
@@ -14,6 +14,7 @@ import {
 	getLocalSTorage,
 	deleteLocalStorage,
 } from "./js/logic/saveToDoInLocalStorage.js";
+// Importing JS-DOM
 
 export const allToDosArray = [];
 export const allProjectsArray = [];
