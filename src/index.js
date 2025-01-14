@@ -9,18 +9,20 @@ import { Project } from "./js/logic/task.js";
 import { CreateTodo } from "./js/logic/createToDo.js";
 import DeleteTodo from "./js/logic/deleteToDo.js";
 import { ChangeToDo, ChangeTaskCheckList } from "./js/logic/changeToDo.js";
+import {
+	updateLocalStorage,
+	getLocalSTorage,
+	deleteLocalStorage,
+} from "./js/logic/saveToDoInLocalStorage.js";
 
 export const allToDosArray = [];
-export const allProjectsArray = []
-
+export const allProjectsArray = [];
 
 function createNewProjects(name) {
-    let newProjects = new Project(name)
-    allProjectsArray.push(newProjects);
+	let newProjects = new Project(name);
+	allProjectsArray.push(newProjects);
 }
-function addTaskToProjects(WhichProject, ...task) {
-
-}
+function addTaskToProjects(WhichProject, ...task) {}
 
 function settingAddTask() {
 	let addTask = new CreateTodo();
