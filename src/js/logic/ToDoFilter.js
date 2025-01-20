@@ -62,14 +62,28 @@ export class ToDoSorter {
 
 		return upComming;
 	}
-	#searchInToDo() {}
-	#searchInProjects() {}
+	//Looks for an element, that includes the exact same word or it contains following letters (search for "he" -> "hello" is true)
+	#findElement(element, searchTerm) {
+		element.searchTitle.toLowerCase().includes(searchTerm.toLowerCase());
+	}
+	#searchToDosAndProjects(searchValue, searchInArray){
+		return searchInArray.filter((element) => this.#findElement(element, searchValue));
+	}
+
 	searchTask(search) {
 		let searchValue = search;
-        if (typeof searchValue !== "string") {
-            return console.log("Invalid Searchvalue. SearchValue needs to be a string! Current type: " + typeof searchValue);
-        }
-		this.#searchInToDo();
-		this.#searchInProjects();
+		if (typeof searchValue !== "string") {
+			return console.log(
+				"Invalid Searchvalue. SearchValue needs to be a string! Current type: " +
+					typeof searchValue
+			);
+		}
+		const findValueToDo = this.#searchToDosAndProjects();
+		const findValueProjects = this.#searchToDosAndProjects();
+
+		//Set used for remove duplicats(that have the same reference)
+		const allTaskFound = [...new Set(findValueToDo.concat(findValueProjects))];
+
+		return allTaskFound;
 	}
 }
