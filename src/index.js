@@ -15,9 +15,31 @@ import {
 	deleteLocalStorage,
 } from "./js/logic/saveToDoInLocalStorage.js";
 // Importing JS-DOM
+import { AddTask as changeSiteToAddTask } from "./js/DOM/changeSite.js";
+
+const addTaskInstance = new changeSiteToAddTask();
 
 export const allToDosArray = [];
 export const allProjectsArray = [];
+
+function changeSite() {
+	const bodyElement = document.body;
+	bodyElement.addEventListener("click", (element) => {
+		const clickedElement = element.target; 
+		console.log(clickedElement); 
+
+		switch (clickedElement.id) {
+			case "addTask":
+				console.log("Add Task Button clicked!");
+				addTaskInstance.buildSite();
+				break;
+
+			default:
+				console.log("No Btn clicked");
+				break;
+		}
+	});
+}
 
 function createNewProjects(name) {
 	let newProjects = new Project(name);
@@ -50,8 +72,10 @@ function settingChangeCompletedTask() {
 	completedTask.processTaskCheckList();
 }
 
-settingAddTask();
-settingChangeCompletedTask();
+changeSite();
+
+//settingAddTask();
+//settingChangeCompletedTask();
 //settingChangeTask();
 //settingDeleteTask();
 console.log(allToDosArray);

@@ -1,114 +1,132 @@
-const parentContent = document.getElementsByClassName("content");
-const content = document.querySelector("#content");
-class AddTask {
+ export class AddTask {
 	formInput() {
-        const form = document.querySelector("#form"); 
+		const form = document.querySelector("#form");
+        
 
-		for (let i = 0; i > 7; i++) {
+		for (let i = 0; i < 7; i++) {
+            const brElement = document.createElement("br");
+            const secondBrElement = document.createElement("br");
+
 			const createInput = document.createElement("input");
-			createInput.id(`inputNumber${i}`);
+			createInput.id = `inputNumber${i}`;
 
 			const createLabel = document.createElement("label");
-			createLabel.id(`labelNumber${i}`);
+			createLabel.id = `labelNumber${i}`;
 
 			if (i === 1) {
-				// TEXTFIELD -- i = 1, 3, 6, 7
-                // --TITLE
+				// TEXTFIELD -- TITLE
+
 				createInput.type = "text";
-				createInput.textContent = "Textfield";
-
 				createLabel.htmlFor = `inputNumber${i}`;
-				createLabel.textContent = `Name the title of yout To Do: `;
+				createLabel.textContent = `Name the title of your To Do: `;
 
-                form.appendChild(createLabel);
-                form.appendChild(createInput);
+				form.appendChild(createLabel);
+                form.appendChild(secondBrElement);
+				form.appendChild(createInput);
+                form.appendChild(brElement);
 			} else if (i === 3) {
-                // --DESCRIPTION
-                createInput.type = "text";
-				createInput.textContent = "Textfield";
+				// TEXTFIELD -- DESCRIPTION
+                const textArea = document.createElement("textarea");
+                textArea.id = `inputNumber${i}`;
 
 				createLabel.htmlFor = `inputNumber${i}`;
 				createLabel.textContent = `Description: `;
 
-                form.appendChild(createLabel);
-                form.appendChild(createInput);
+				form.appendChild(createLabel);
+                form.appendChild(secondBrElement);
+				form.appendChild(textArea);
+                form.appendChild(brElement);
 			} else if (i === 6) {
-                // --NOTES
-                createInput.type = "text";
-				createInput.textContent = "Textfield";
+				// TEXTFIELD -- NOTES
+				const textArea = document.createElement("textarea");
+                textArea.id = `inputNumber${i}`;
 
 				createLabel.htmlFor = `inputNumber${i}`;
 				createLabel.textContent = `Notes: `;
 
-                form.appendChild(createLabel);
-                form.appendChild(createInput);
+				form.appendChild(createLabel);
+                form.appendChild(secondBrElement);
+				form.appendChild(textArea);
+                form.appendChild(brElement);
 			} else if (i === 7) {
-                // --PROJECTS
-                createInput.type = "text";
-				createInput.textContent = "Textfield";
-
+				// TEXTFIELD -- PROJECTS
+				createInput.type = "text";
 				createLabel.htmlFor = `inputNumber${i}`;
-				createLabel.textContent = `In which projects do you wanna add it? (write the name of it. If it's a new name, it will create a new Projects!)`;
+				createLabel.textContent = `In which project do you want to add it?`;
 
-                form.appendChild(createLabel);
-                form.appendChild(createInput);
+				form.appendChild(createLabel);
+                form.appendChild(secondBrElement);
+				form.appendChild(createInput);
+                form.appendChild(brElement);
 			} else if (i === 2) {
 				// DATE
 				createInput.type = "date";
-				createInput.textContent = "Date";
-
 				createLabel.htmlFor = `inputNumber${i}`;
 				createLabel.textContent = `When is the due date?`;
 
-                form.appendChild(createLabel);
-                form.appendChild(createInput);
+				form.appendChild(createLabel);
+                form.appendChild(secondBrElement);
+				form.appendChild(createInput);
+                form.appendChild(brElement);
 			} else if (i === 4) {
-				// RADIO -- priority
-				createInput.type = "radio";
-				createInput.textContent = "Green";
-
-                const option2Input = document.createElement("input");
-                const option3Input = document.createElement("input");
-
-                option2Input.id = `input${i}Option2`;
-                option3Input.id = `input${i}Option3`;
-
-                option2Input.type = "radio";
-                option3Input.type = "radio";
-
-                option2Input.textContent = "Yellow";
-                option3Input.textContent = "Red";
-
-				createLabel.htmlFor = `inputNumber${i}`;
+				// RADIO -- PRIORITY
 				createLabel.textContent = `Which priority does it have?`;
+				form.appendChild(createLabel);
+                form.appendChild(secondBrElement);
 
-                form.appendChild(createLabel);
-                form.appendChild(createInput);
-                form.appendChild(option2Input);
-                form.appendChild(option3Input);
+				const priorities = ["Green", "Yellow", "Red"];
+				priorities.forEach((priority, index) => {
+					const priorityInput = document.createElement("input");
+					const priorityLabel = document.createElement("label");
 
+					priorityInput.type = "radio";
+					priorityInput.name = "priority";
+					priorityInput.id = `priority${index}`;
+					priorityLabel.htmlFor = `priority${index}`;
+					priorityLabel.textContent = priority;
+
+					form.appendChild(priorityInput);
+                    
+					form.appendChild(priorityLabel);
+                    form.appendChild(brElement);
+				});
 			} else if (i === 5) {
-				// RADIO -- Y/N
-				createInput.type = "radio";
-				createInput.textContent = "Yes";
-
-                const optionNo = document.createElement("input");
-                optionNo.id = `input${i}OptionNo`;
-                optionNo.type = "radio";
-                optionNo.textContent = "No"
-
-				createLabel.htmlFor = `inputNumber${i}`;
+				// RADIO -- YES/NO
 				createLabel.textContent = `Already done?`;
+				form.appendChild(createLabel);
+                //form.appendChild(secondBrElement);
+                
+
+				const options = ["Yes", "No"];
+				options.forEach((option, index) => {
+					const optionInput = document.createElement("input");
+					const optionLabel = document.createElement("label");
+
+					optionInput.type = "radio";
+					optionInput.name = "done";
+					optionInput.id = `done${index}`;
+					optionLabel.htmlFor = `done${index}`;
+					optionLabel.textContent = option;
+
+					form.appendChild(optionInput);
+					form.appendChild(optionLabel);
+                    form.appendChild(brElement);
+				});
 			}
 		}
 	}
+
 	createForm() {
+        const content = document.querySelector("#Content");
 		const createFormElement = document.createElement("form");
-		createFormElement.id("form");
+		createFormElement.id = "form";
 		content.appendChild(createFormElement);
 	}
 
 	buildSite() {
+        document.querySelector("#Content").innerHTML = "";
+        
 		this.createForm();
+		this.formInput();
 	}
 }
