@@ -27,14 +27,38 @@ export const allProjectsArray = [];
 function changeSite() {
 	const bodyElement = document.body;
 	bodyElement.addEventListener("click", (element) => {
-		const clickedElement = element.target; 
-		console.log(clickedElement); 
+		const clickedElement = element.target;
+		console.log(clickedElement);
 
 		switch (clickedElement.id) {
 			case "addTask":
 				console.log("Add Task Button clicked!");
 				addTaskInstance.buildSite();
-				creatNewTask
+
+				// Warte auf den Submit-Klick
+				setTimeout(() => {
+					const submitButton = document.querySelector("#submitTask");
+					if (!submitButton) {
+						console.error("Submit-Button nicht gefunden!");
+						return;
+					}
+
+					submitButton.addEventListener("click", (event) => {
+						event.preventDefault(); // Verhindert das Neuladen der Seite
+						console.log("Submit button clicked!");
+
+						creatNewTask.proccess(); // Jetzt wird das Formular verarbeitet
+						const formValue = creatNewTask.getExportValue();
+
+						if (!formValue) {
+							console.error("Error: formValue is null!");
+							return;
+						}
+
+						console.info("Form Value:", formValue);
+						settingAddTask(formValue);
+					}, { once: true }); // Event-Listener nur einmal hinzufügen
+				}, 100); // Kurze Verzögerung, um sicherzustellen, dass die Seite geladen ist
 				break;
 
 			default:
@@ -50,17 +74,9 @@ function createNewProjects(name) {
 }
 function addTaskToProjects(WhichProject, ...task) {}
 
-function settingAddTask() {
+function settingAddTask(task) {
 	let addTask = new CreateTodo();
-	//addTask.processToDo();
-	addTask.createTodo(
-		"Task 1",
-		"Description 1",
-		"2021-10-01",
-		"green",
-		"Notes 1",
-		false
-	);
+	addTask.processToDo(task);
 }
 function settingDeleteTask() {
 	let deleteTask = new DeleteTodo();

@@ -12,17 +12,17 @@ export class CreateTodo {
 		checklist,
 		project
 	) {
-		if (typeof checklist !== "boolean" || checklist === null) {
-			console.log("Checklist must be a boolean");
+		if (typeof checklist !== "boolean" && checklist === null) {
+			console.error("Checklist must be a boolean");
 			return false;
 		}
 		if (
-			priority !== "green" ||
-			priority !== "yellow" ||
-			priority !== "red" ||
+			priority !== "green" &&
+			priority !== "yellow" &&
+			priority !== "red" &&
 			priority !== null
 		) {
-			console.log("Priority must be green, yellow, or red");
+			console.error("Priority must be green, yellow, or red");
 			return false;
 		}
 		if (
@@ -34,7 +34,7 @@ export class CreateTodo {
 			description === null ||
 			project === null
 		) {
-			console.log(
+			console.error(
 				"Notes, description and string must be a string: " +
 					typeof notes +
 					", " +
@@ -46,9 +46,18 @@ export class CreateTodo {
 			);
 			return false;
 		}
-		if (!isValid(dueDate) || dueDate === null) {
-			console.log("Due date must be a valid date");
-			return false;
+		//checks first if it a valid date, after that it checks if it is not null
+		if (!isValid(dueDate)) {
+			let isNull = 0;
+			if (dueDate === null) {
+				isNull = 1;
+			}
+			if (isNull === 0) {
+				console.error(
+					"Due date must be a valid date. current value: " + dueDate
+				);
+				return false;
+			}
 		}
 		return true;
 	}
@@ -66,7 +75,7 @@ export class CreateTodo {
 		console.log(task.taskTitle + " successfully created");
 		taskArray.push(task);
 	}
-
+	/*
 	#setValueTitle() {
 		let titleValue = prompt("Enter the title of the task"); //placeholder for input
 		return titleValue;
@@ -95,15 +104,16 @@ export class CreateTodo {
 		let projectValue = prompt("Enter the Project of the task"); //placeholder for input
 		return projectValue;
 	}
-	processToDo() {
+		*/
+	processToDo(formValue) {
 		console.log("Processing ToDo");
-		let title = this.#setValueTitle();
-		let description = this.#setDescriptionValue();
-		let dueDate = this.#setDueDateValue();
-		let priority = this.#setPriorityValue();
-		let notes = this.#setNotesValue();
-		let checklist = this.#setChecklistValue();
-		let project = this.#setProjectValue();
+		let title = formValue[0];
+		let description = formValue[1];
+		let dueDate = formValue[2];
+		let priority = formValue[3];
+		let notes = formValue[4];
+		let checklist = formValue[5];
+		let project = formValue[6];
 
 		if (
 			this.#validateToDoInput(
@@ -130,5 +140,3 @@ export class CreateTodo {
 		}
 	}
 }
-
-

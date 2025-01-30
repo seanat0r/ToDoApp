@@ -1,10 +1,4 @@
 export class createNewTaskUILogic {
-	constructor() {
-		this.clickedElement = null;
-		document
-			.querySelector("#Content")
-			.addEventListener("click", this.#handleClick.bind(this));
-	}
 	#handleClick(element) {
 		this.clickedElement = element.target;
 		console.log(
@@ -12,7 +6,7 @@ export class createNewTaskUILogic {
 				this.clickedElement.id
 		);
 	}
-    #valueReadyToExport = null;
+	#valueReadyToExport = null;
 
 	#check() {
 		return document.querySelector("#form") ? true : false;
@@ -32,32 +26,50 @@ export class createNewTaskUILogic {
 
 		function getValue(input) {
 			if (!input.value) {
-				formatedValue.push(null);
+				formatedValue.push("");
+			} else {
+				formatedValue.push(input.value);
 			}
-			formatedValue.push(input.value);
 		}
 		function getRadioValue(input) {
 			input.forEach((radio) => {
-                if (radio.checked) {
-                    formatedValue.push(radio);
-                }
-            });
+				if (radio.checked) {
+					if (radio.id === "done0") {
+						formatedValue.push(true);
+					} else if (radio.id === "done1") {
+						formatedValue.push(false);
+					} else if (radio.id === "priority0") {
+						formatedValue.push("green");
+					} else if (radio.id === "priority1") {
+						formatedValue.push("yellow");
+					} else if (radio.id === "priority2") {
+						formatedValue.push("red");
+					} else {
+						formatedValue.push(null);
+					}
+				}
+			});
 		}
-        function getNewDate(input) {
-            const newDate = new Date(input.value);
-            formatedValue.push(newDate);
-        }
+		function getNewDate(input) {
+			if (!input.value) {
+				formatedValue.push(null);
+			} else {
+				const newDate = new Date(input.value);
+				formatedValue.push(newDate);
+			}
+		}
 
-        //formated and push to array
-		getValue(titleValue);
-		getValue(descriptionValue);
-		getNewDate(dueDateValue)
-		getRadioValue(priorityRadios);
-		getValue(notesValue);
-		getRadioValue(doneRadio);
-		getValue(projectValue);
+		//formated and push to array
+		//Index position
+		getValue(titleValue); //0
+		getValue(descriptionValue); //1
+		getNewDate(dueDateValue); //2
+		getRadioValue(priorityRadios); //3
+		getValue(notesValue); //4
+		getRadioValue(doneRadio); //5
+		getValue(projectValue); //6
 
-        return formatedValue;
+		return formatedValue;
 	}
 	#submitProccess() {
 		function validateForm() {
@@ -113,28 +125,28 @@ export class createNewTaskUILogic {
 
 			return isValid.every(isTrue);
 		}
-		//ensure that the form exist
-		if (this.clickedElement.id !== "submitTask") {
-			return console.log("Submit wasn't clicked!");
-		}
+		document.querySelector("#submitTask").addEventListener("click", (event) => {
+			event.preventDefault();
+			console.log("Submit button clicked!");
 
-		if (!validateForm()) {
-			console.error("Invaild input in the form. change your input!");
-			this.clickedElement.preventDefault();
-			return;
-		}
+			if (validateForm()) {
+				console.log("Form is valid, proceeding...");
+			} else {
+				console.error("Form validation failed!");
+				return;
+			}
+		});
 
-		this.clickedElement.preventDefault();
-         const readyToSend = this.#formating();
-        this.#exportData(readyToSend);
+		const readyToSend = this.#formating();
+		this.#exportData(readyToSend);
 	}
-    #exportData(value) {
-        console.log("ToDo Value: " + value);
-        this.#valueReadyToExport = value;
-    }
-    getExportValue() {
-        return this.#valueReadyToExport;
-    }
+	#exportData(value) {
+		console.log("ToDo Value: " + value);
+		this.#valueReadyToExport = value;
+	}
+	getExportValue() {
+		return this.#valueReadyToExport;
+	}
 
 	proccess() {
 		if (!this.#check()) {
@@ -143,5 +155,4 @@ export class createNewTaskUILogic {
 		}
 		this.#submitProccess();
 	}
-
 }
