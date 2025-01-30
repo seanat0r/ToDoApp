@@ -1,11 +1,10 @@
- export class AddTask {
+export class AddTask {
 	formInput() {
 		const form = document.querySelector("#form");
-        
 
-		for (let i = 0; i < 7; i++) {
-            const brElement = document.createElement("br");
-            const secondBrElement = document.createElement("br");
+		for (let i = 0; i < 9; i++) {
+			const brElement = document.createElement("br");
+			const secondBrElement = document.createElement("br");
 
 			const createInput = document.createElement("input");
 			createInput.id = `inputNumber${i}`;
@@ -21,33 +20,40 @@
 				createLabel.textContent = `Name the title of your To Do: `;
 
 				form.appendChild(createLabel);
-                form.appendChild(secondBrElement);
+				form.appendChild(secondBrElement);
 				form.appendChild(createInput);
-                form.appendChild(brElement);
+				form.appendChild(brElement);
+
+                createInput.required = true;
+                createInput.placeholder = "Give your Todo a title ..."
 			} else if (i === 3) {
-				// TEXTFIELD -- DESCRIPTION
-                const textArea = document.createElement("textarea");
-                textArea.id = `inputNumber${i}`;
+				// TEXTAREA -- DESCRIPTION
+				const textArea = document.createElement("textarea");
+				textArea.id = `inputNumber${i}`;
 
 				createLabel.htmlFor = `inputNumber${i}`;
 				createLabel.textContent = `Description: `;
 
 				form.appendChild(createLabel);
-                form.appendChild(secondBrElement);
+				form.appendChild(secondBrElement);
 				form.appendChild(textArea);
-                form.appendChild(brElement);
+				form.appendChild(brElement);
+
+                textArea.placeholder = "Describe your task (optinoal)"
 			} else if (i === 6) {
 				// TEXTFIELD -- NOTES
 				const textArea = document.createElement("textarea");
-                textArea.id = `inputNumber${i}`;
+				textArea.id = `inputNumber${i}`;
 
 				createLabel.htmlFor = `inputNumber${i}`;
 				createLabel.textContent = `Notes: `;
 
 				form.appendChild(createLabel);
-                form.appendChild(secondBrElement);
+				form.appendChild(secondBrElement);
 				form.appendChild(textArea);
-                form.appendChild(brElement);
+				form.appendChild(brElement);
+
+                textArea.placeholder = "Additional thoughts or important details (optional)…"
 			} else if (i === 7) {
 				// TEXTFIELD -- PROJECTS
 				createInput.type = "text";
@@ -55,9 +61,11 @@
 				createLabel.textContent = `In which project do you want to add it?`;
 
 				form.appendChild(createLabel);
-                form.appendChild(secondBrElement);
+				form.appendChild(secondBrElement);
 				form.appendChild(createInput);
-                form.appendChild(brElement);
+				form.appendChild(brElement);
+
+                createInput.placeholder = "Add to a project (same name) or create a new project.";
 			} else if (i === 2) {
 				// DATE
 				createInput.type = "date";
@@ -65,14 +73,14 @@
 				createLabel.textContent = `When is the due date?`;
 
 				form.appendChild(createLabel);
-                form.appendChild(secondBrElement);
+				form.appendChild(secondBrElement);
 				form.appendChild(createInput);
-                form.appendChild(brElement);
+				form.appendChild(brElement);
 			} else if (i === 4) {
 				// RADIO -- PRIORITY
 				createLabel.textContent = `Which priority does it have?`;
 				form.appendChild(createLabel);
-                form.appendChild(secondBrElement);
+				form.appendChild(secondBrElement);
 
 				const priorities = ["Green", "Yellow", "Red"];
 				priorities.forEach((priority, index) => {
@@ -86,16 +94,15 @@
 					priorityLabel.textContent = priority;
 
 					form.appendChild(priorityInput);
-                    
+
 					form.appendChild(priorityLabel);
-                    form.appendChild(brElement);
+					form.appendChild(brElement);
 				});
 			} else if (i === 5) {
 				// RADIO -- YES/NO
 				createLabel.textContent = `Already done?`;
 				form.appendChild(createLabel);
-                //form.appendChild(secondBrElement);
-                
+				//form.appendChild(secondBrElement);
 
 				const options = ["Yes", "No"];
 				options.forEach((option, index) => {
@@ -110,22 +117,32 @@
 
 					form.appendChild(optionInput);
 					form.appendChild(optionLabel);
-                    form.appendChild(brElement);
+					form.appendChild(brElement);
 				});
 			}
+            else if (i === 8) {
+                // BUTTON -- SUBMIT
+                const button = document.createElement("button");
+                button.type = "submit";
+                button.id = "submitTask"
+                button.textContent = "Add Task";
+
+                form.appendChild(button);
+
+            }
 		}
 	}
 
 	createForm() {
-        const content = document.querySelector("#Content");
+		const content = document.querySelector("#Content");
 		const createFormElement = document.createElement("form");
 		createFormElement.id = "form";
 		content.appendChild(createFormElement);
 	}
 
 	buildSite() {
-        document.querySelector("#Content").innerHTML = "";
-        
+		document.querySelector("#Content").innerHTML = "";
+
 		this.createForm();
 		this.formInput();
 	}

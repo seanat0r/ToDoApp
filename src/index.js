@@ -16,8 +16,10 @@ import {
 } from "./js/logic/saveToDoInLocalStorage.js";
 // Importing JS-DOM
 import { AddTask as changeSiteToAddTask } from "./js/DOM/changeSite.js";
+import {createNewTaskUILogic } from "./js/DOM/createNewTask.js"
 
 const addTaskInstance = new changeSiteToAddTask();
+const creatNewTask = new createNewTaskUILogic();
 
 export const allToDosArray = [];
 export const allProjectsArray = [];
@@ -32,6 +34,7 @@ function changeSite() {
 			case "addTask":
 				console.log("Add Task Button clicked!");
 				addTaskInstance.buildSite();
+				creatNewTask
 				break;
 
 			default:

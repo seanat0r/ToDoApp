@@ -20,6 +20,19 @@ br {
 #labelNumber6 {
     padding-top: 1rem;
 }
+#submitTask {
+    border: 2px dotted #ffa200;
+    border-radius: 9px 9px;
+    padding: 0.25rem;
+}
+#submitTask:hover {
+    border: 2px solid #ffa200; 
+    box-shadow: 0 0 5px #ffa200;
+    background-color: #ffa200;
+}
+#submitTask:active {
+   color: #000;
+}
 /* ADD TASK */
 input[type="text"] {
     width: 100%;
@@ -120,6 +133,11 @@ label[for="done1"]:hover{
 }
 label[for="done1"]:active{
     color: #000;
+}
+
+input[type="radio"]:checked + label {
+    background-color: #ffa200;
+    font-style: oblique;
 }
 /* DATE */
 input[type="date"] {
