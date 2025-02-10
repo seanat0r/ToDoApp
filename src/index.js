@@ -15,10 +15,11 @@ import {
 	deleteLocalStorage,
 } from "./js/logic/saveToDoInLocalStorage.js";
 // Importing JS-DOM
-import { AddTask as changeSiteToAddTask } from "./js/DOM/changeSite.js";
+import { AddTask as changeSiteToAddTask, SearchTask as changeSiteSearchTask } from "./js/DOM/changeSite.js";
 import {createNewTaskUILogic } from "./js/DOM/createNewTask.js"
 
 const addTaskInstance = new changeSiteToAddTask();
+const searchTaskInstance = new changeSiteSearchTask();
 const creatNewTask = new createNewTaskUILogic();
 
 export const allToDosArray = [];
@@ -31,6 +32,8 @@ function changeSite() {
 		console.log(clickedElement);
 
 		switch (clickedElement.id) {
+
+			//TODO: REWRITE THE CODE! -> case: "addTask"
 			case "addTask":
 				console.log("Add Task Button clicked!");
 				addTaskInstance.buildSite();
@@ -59,7 +62,11 @@ function changeSite() {
 						settingAddTask(formValue);
 					}, { once: true }); // Event-Listener nur einmal hinzufügen
 				}, 100); // Kurze Verzögerung, um sicherzustellen, dass die Seite geladen ist
+				
 				break;
+				case "searchTask":
+					searchTaskInstance.buildSite();
+					break;
 
 			default:
 				console.log("No Btn clicked");
@@ -77,6 +84,7 @@ function addTaskToProjects(WhichProject, ...task) {}
 function settingAddTask(task) {
 	let addTask = new CreateTodo();
 	addTask.processToDo(task);
+	console.log("Check, if a task got into the array: ", allToDosArray);
 }
 function settingDeleteTask() {
 	let deleteTask = new DeleteTodo();
@@ -93,8 +101,9 @@ function settingChangeCompletedTask() {
 
 changeSite();
 
+
 //settingAddTask();
 //settingChangeCompletedTask();
 //settingChangeTask();
 //settingDeleteTask();
-console.log(allToDosArray);
+console.log("Check, if a task got into the array: " + allToDosArray);

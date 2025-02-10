@@ -91,7 +91,13 @@ export class createNewTaskUILogic {
 			function validDueDate() {
 				const today = new Date().toISOString().split("T")[0];
 				const dueDate = dueDateValue.value;
-				isValid.push(dueDate && dueDate >= today ? true : false);
+
+				if (!dueDate) {
+					isValid.push(true); // Falls kein Datum eingegeben wurde, ist das erlaubt
+				} else {
+					const parsedDate = new Date(dueDate);
+					isValid.push(!isNaN(parsedDate) && dueDate >= today);
+				}
 			}
 
 			//only gives false when the use inputs only space!

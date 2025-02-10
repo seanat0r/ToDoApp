@@ -75,38 +75,9 @@ export class CreateTodo {
 		console.log(task.taskTitle + " successfully created");
 		taskArray.push(task);
 	}
-	/*
-	#setValueTitle() {
-		let titleValue = prompt("Enter the title of the task"); //placeholder for input
-		return titleValue;
-	}
-	#setDescriptionValue() {
-		let descriptionValue = prompt("Enter the description of the task"); //placeholder for input
-		return descriptionValue;
-	}
-	#setDueDateValue() {
-		let dueDateValue = new Date(); //placeholder for input
-		return dueDateValue;
-	}
-	#setPriorityValue() {
-		let priorityValue = prompt("Enter the priority of the task"); //placeholder for input
-		return priorityValue;
-	}
-	#setNotesValue() {
-		let notesValue = prompt("Enter the notes of the task"); //placeholder for input
-		return notesValue;
-	}
-	#setChecklistValue() {
-		let checklistValue = false; //placeholder for input
-		return checklistValue;
-	}
-	#setProjectValue() {
-		let projectValue = prompt("Enter the Project of the task"); //placeholder for input
-		return projectValue;
-	}
-		*/
+	
 	processToDo(formValue) {
-		console.log("Processing ToDo");
+		console.log("Processing ToDo: " + formValue);
 		let title = formValue[0];
 		let description = formValue[1];
 		let dueDate = formValue[2];
@@ -126,6 +97,7 @@ export class CreateTodo {
 				project
 			)
 		) {
+
 			this.createTodo(
 				title,
 				description,
