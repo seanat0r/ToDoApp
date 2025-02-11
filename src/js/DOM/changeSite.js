@@ -195,7 +195,7 @@ export class SearchTask {
 
 			projectDiv.appendChild(createH3);
 
-			this.#taskDetails(element, projectDiv);
+			this.#taskDetails(element, document.getElementById(taskName));
 		});
 	}
 	#taskDetails(task, projectDiv) {
@@ -221,7 +221,7 @@ export class SearchTask {
 			createPDetails.style.fontWeight = "normal";
 
 			createPWhat.style.marginLeft = "10px";
-			createPDetails.style.marginLeft = "20px";
+			createPDetails.style.marginLeft = "10px";
 			console.log(i);
 			if (i === 3) {
 				if (task.taskPriority === "red") {

@@ -1,10 +1,10 @@
-// Importing CSS
+//* Importing CSS
 import "./styles/style.css";
 import "./styles/header.css";
 import "./styles/aside.css";
 import "./styles/content.css";
 
-// Importing JS-Logic
+//* Importing JS-Logic
 import { Project } from "./js/logic/task.js";
 import { CreateTodo } from "./js/logic/createToDo.js";
 import DeleteTodo from "./js/logic/deleteToDo.js";
@@ -14,16 +14,19 @@ import {
 	getLocalSTorage,
 	deleteLocalStorage,
 } from "./js/logic/saveToDoInLocalStorage.js";
-// Importing JS-DOM
+//* Importing JS-DOM
 import {
 	AddTask as changeSiteToAddTask,
 	SearchTask as changeSiteSearchTask,
 } from "./js/DOM/changeSite.js";
 import { createNewTaskUILogic } from "./js/DOM/createNewTask.js";
+import { EditTask } from "./js/DOM/editTask.js";
+import { set } from "date-fns/set";
 
 const addTaskInstance = new changeSiteToAddTask();
 const searchTaskInstance = new changeSiteSearchTask();
 const creatNewTask = new createNewTaskUILogic();
+const editTask = new EditTask();
 
 export const allToDosArray = [];
 export const allProjectsArray = [];
@@ -73,6 +76,9 @@ function changeSite() {
 			case "searchTask":
 				getLocalSTorage();
 				searchTaskInstance.buildSite();
+				setTimeout(() => {
+					editTask.proccess();
+				}, 100);
 				break;
 
 			default:
