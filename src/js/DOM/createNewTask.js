@@ -97,7 +97,7 @@ export class createNewTaskUILogic {
 				const dueDate = dueDateValue.value;
 
 				if (!dueDate) {
-					isValid.push(true); // Falls kein Datum eingegeben wurde, ist das erlaubt
+					isValid.push(true);
 				} else {
 					const parsedDate = new Date(dueDate);
 					isValid.push(!isNaN(parsedDate) && dueDate >= today);
@@ -130,7 +130,7 @@ export class createNewTaskUILogic {
 
 			return isValid.every(isTrue);
 		}
-		//! FORM VALIDATION: ERROR
+		
 		if (validateForm()) {
 			console.log("Form is valid, proceeding...");
 		} else {

@@ -1,12 +1,23 @@
+import { set } from "date-fns/set";
 import { allToDosArray } from "../../index.js";
+import DeleteTodo from "../logic/deleteToDo.js";
+import {
+	updateLocalStorage,
+	getLocalSTorage,
+	deleteLocalStorage,
+} from "../logic/saveToDoInLocalStorage.js";
 
 export class EditTask {
+	#isInEditorMode = false;
 	#selectTask() {
 		return new Promise((resolve) => {
 			const content = document.querySelector("#Content");
 			function getTaskIndex(element) {
 				const clickedElement = element.target;
 				const idElement = clickedElement.id;
+				if (idElement === "searchField" || idElement === "searchButton") {
+					return;
+				}
 				console.log("Clicked Element: " + idElement);
 				resolve(idElement);
 			}
@@ -20,9 +31,10 @@ export class EditTask {
 			content.appendChild(createFormElement);
 		}
 		function formInput() {
-			const task = allToDosArray.find((todo) => todo.taskTitle === taskTitle) || {};
+			const task =
+				allToDosArray.find((todo) => todo.taskTitle === taskTitle) || {};
 
-			for (let i = 0; i < 9; i++) {
+			for (let i = 0; i < 10; i++) {
 				const brElement = document.createElement("br");
 				const secondBrElement = document.createElement("br");
 
@@ -37,7 +49,7 @@ export class EditTask {
 					createInput.type = "text";
 					createLabel.htmlFor = `inputNumber${i}`;
 					createLabel.textContent = `Name the title of your To Do: `;
-					createInput.value = task.taskTitle || ""; 
+					createInput.value = task.taskTitle || "";
 
 					form.appendChild(createLabel);
 					form.appendChild(secondBrElement);
@@ -52,7 +64,7 @@ export class EditTask {
 					textArea.id = `inputNumber${i}`;
 					createLabel.htmlFor = `inputNumber${i}`;
 					createLabel.textContent = `Description: `;
-					textArea.value = task.taskDescription || ""; 
+					textArea.value = task.taskDescription || "";
 
 					form.appendChild(createLabel);
 					form.appendChild(secondBrElement);
@@ -66,7 +78,7 @@ export class EditTask {
 					textArea.id = `inputNumber${i}`;
 					createLabel.htmlFor = `inputNumber${i}`;
 					createLabel.textContent = `Notes: `;
-					textArea.value = task.taskNotes || ""; 
+					textArea.value = task.taskNotes || "";
 
 					form.appendChild(createLabel);
 					form.appendChild(secondBrElement);
@@ -94,7 +106,9 @@ export class EditTask {
 					createInput.type = "date";
 					createLabel.htmlFor = `inputNumber${i}`;
 					createLabel.textContent = `When is the due date?`;
-					createInput.value = task.taskDueDate ? task.taskDueDate.split('T')[0] : "";
+					createInput.value = task.taskDueDate
+						? task.taskDueDate.split("T")[0]
+						: "";
 
 					form.appendChild(createLabel);
 					form.appendChild(secondBrElement);
@@ -117,9 +131,12 @@ export class EditTask {
 						priorityLabel.htmlFor = `priority${index}`;
 						priorityLabel.textContent = priority;
 
-						if (task.taskPriority.toLowerCase() === priority.toLowerCase()) {
-                            priorityInput.checked = true;
-                        }
+						if (
+							task.taskPriority &&
+							task.taskPriority.toLowerCase() === priority.toLowerCase()
+						) {
+							priorityInput.checked = true;
+						}
 
 						form.appendChild(priorityInput);
 						form.appendChild(priorityLabel);
@@ -142,8 +159,9 @@ export class EditTask {
 						optionLabel.textContent = option;
 
 						if (
-							(task.taskChecklist === true && option === "Yes") ||
-							(task.taskChecklist === false && option === "No")
+							task.taskChecklist !== null &&
+							((task.taskChecklist === true && option === "Yes") ||
+								(task.taskChecklist === false && option === "No"))
 						) {
 							optionInput.checked = true;
 						}
@@ -160,6 +178,14 @@ export class EditTask {
 					button.textContent = "Edit Task";
 
 					form.appendChild(button);
+				} else if (i === 9) {
+					//BUTTON -- DELETE
+					const button = document.createElement("button");
+					button.type = "button";
+					button.id = "deleteTask";
+					button.textContent = "Delete Task";
+
+					form.appendChild(button);
 				}
 			}
 		}
@@ -168,6 +194,7 @@ export class EditTask {
 		document.querySelector("#Content").innerHTML = "";
 		createForm();
 		formInput();
+		this.#isInEditorMode = true;
 	}
 
 	async proccess() {
@@ -175,5 +202,57 @@ export class EditTask {
 		const clickedElement = await this.#selectTask();
 		console.log("ID Element in proccess: " + clickedElement);
 		this.#buildEditorTask(clickedElement);
+	}
+	#delte() {
+		const formTitle = document.querySelector("#inputNumber1").value;
+		if (!formTitle) {
+			console.info("No form title found!");
+			return;
+		}
+		console.log("Task to delete: " + formTitle);
+		let deleteTaskInstance;
+
+		if (!deleteTaskInstance) {
+			const deleteTaskInstance = new DeleteTodo();
+			deleteTaskInstance.processDeleteToDo(formTitle);
+			updateLocalStorage();
+		} else {
+			deleteTaskInstance.processDeleteToDo(formTitle);
+			updateLocalStorage();
+		}
+	}
+	#edit(task) {
+        element.preventDefault();
+        console.log(task)
+    }
+	#click(task) {
+		console.log("Click method is called!");
+		const editButton = document.querySelector("#submitEditTask");
+		const deleteButton = document.querySelector("#deleteTask");
+		console.log(deleteButton);
+		if (deleteButton) {
+			console.log("Delete Button found!");
+			deleteButton.addEventListener("click", () => this.#delte());
+		}
+		if (editButton) {
+            console.log("Edit Button found!");
+            editButton.addEventListener("click", (element) => this.#edit(task));
+		}
+	}
+	//TODO: Implement the edit function
+	async sendProccess() {
+		console.log("Edit Task SEND processed");
+
+		const inetervalID = setInterval(() => {
+			console.info("isInEditorMode: " + this.#isInEditorMode);
+			if (this.#isInEditorMode) {
+                const task = document.querySelector("#inputNumber1").value;;
+				this.#click(task);
+			}
+			if (this.#isInEditorMode) {
+				this.#isInEditorMode = false;
+				clearInterval(inetervalID);
+			}
+		}, 1500);
 	}
 }

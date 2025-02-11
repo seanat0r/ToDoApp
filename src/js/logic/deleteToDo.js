@@ -2,10 +2,7 @@ import { allToDosArray } from "../../index.js";
 export default class DeleteTodo {
 	#allTaskToDelete = [];
 
-	#whichTaskToDelete /*Input*/() {
-		let taskName = prompt(
-			"Deleting Task: Enter the index of the task you want to delete"
-		); //placeholder for input
+	#whichTaskToDelete(taskName) {
 		this.#allTaskToDelete.push(taskName);
         console.log("Task to delete: " + this.#allTaskToDelete);
 	}
@@ -34,16 +31,16 @@ export default class DeleteTodo {
 			return false;
 		}
 	}
-	processDeleteToDo(/*input*/) {
-		this.#whichTaskToDelete(/*input*/);
+	processDeleteToDo(taskName) {
+		this.#whichTaskToDelete(taskName);
 		if (this.#checkUser()) {
 			console.log(
 				"Task deletion confirmed! Deleting task: " + this.#allTaskToDelete
 			);
 			this.#deleteTask();
+			console.log("Task deletion successful!", allToDosArray);
 		} else {
-			alert("Task deletion cancelled!");
-			console.log("Task deletion cancelled");
+			console.warn("Task deletion cancelled!");
 		}
 	}
 }

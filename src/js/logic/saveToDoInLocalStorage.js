@@ -4,6 +4,9 @@ let keyToDo = "keyToDo";
 let keyProjects = "keyProjects";
 
 function saveToLocalStorage() {
+	localStorage.removeItem(keyToDo);
+	localStorage.removeItem(keyProjects);
+
 	localStorage.setItem(keyToDo, JSON.stringify(allToDosArray) || []);
 	localStorage.setItem(keyProjects, JSON.stringify(allProjectsArray) || []);
 	console.info("LocalStorage updated!");

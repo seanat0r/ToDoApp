@@ -78,6 +78,10 @@ function changeSite() {
 				searchTaskInstance.buildSite();
 				setTimeout(() => {
 					editTask.proccess();
+					setTimeout(() => {
+						editTask.sendProccess();
+					}, 100);
+					
 				}, 100);
 				break;
 

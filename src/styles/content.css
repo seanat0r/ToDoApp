@@ -30,6 +30,23 @@ br {
     border-radius: 9px 9px;
     padding: 0.25rem; 
 }
+#deleteTask {
+    border: 2px dotted #fe0000;
+    background-color: #ff000080;
+    border-radius: 9px 9px;
+    padding: 0.25rem; 
+    margin-left: 1rem;
+}
+#deleteTask:hover {
+    border: 2px solid #fe0000; 
+    box-shadow: 0 0 5px #fe0000;
+    background-color: #fe0000;
+}
+#submitEditTask:hover {
+    border: 2px solid #ffa200; 
+    box-shadow: 0 0 5px #ffa200;
+    background-color: #ffa200;
+}
 #submitTask:hover {
     border: 2px solid #ffa200; 
     box-shadow: 0 0 5px #ffa200;
@@ -38,6 +55,12 @@ br {
 #submitTask:active {
    color: #000;
 }
+#submitEditTask:active {
+    color: #000;
+ }
+ #deleteTask:active {
+    color: #000;
+ }
 /* ADD TASK */
 input[type="text"] {
     width: 100%;
