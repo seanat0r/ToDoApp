@@ -1,4 +1,7 @@
+import { sub } from "date-fns/sub";
 import { allToDosArray, allProjectsArray } from "../../index.js";
+import { ToDoSorter } from "../logic/ToDoFilter.js";
+import { set } from "date-fns/set";
 export class AddTask {
 	formInput() {
 		const form = document.querySelector("#form");
@@ -149,11 +152,12 @@ export class AddTask {
 	}
 }
 export class SearchTask {
-	#createLayerDiv() {
+	#debounceTimer;
+	#createLayerDiv(array) {
 		//* To get the element: element.taskProjectName
 		const createdProjects = new Set();
 
-		allToDosArray.forEach((element) => {
+		array.forEach((element) => {
 			const projectName = element.taskProjectName || "No Project";
 			if (createdProjects.has(projectName)) {
 				return;
@@ -174,12 +178,12 @@ export class SearchTask {
 			//Styling
 			elementLayer.style.textAlign = "center";
 			elementLayer.style.color = "white";
-			elementLayer.style.borderBottom = "3px dashed #000";
+			elementLayer.style.borderBottom = "3px solid #000";
 		});
 	}
-	//TODO: Foreach task put it in the right project and display it. -> show details of the task!
-	#createTask() {
-		allToDosArray.forEach((element) => {
+
+	#createTask(array) {
+		array.forEach((element) => {
 			const createH3 = document.createElement("h3");
 			const taskName = element.taskTitle;
 			const projectDiv = document.getElementById(
@@ -230,17 +234,75 @@ export class SearchTask {
 			}
 			if (i === 5) {
 				console.log("Last Element + ", i);
-				createPDetails.style.borderBottom = "3px solid #000";
+				createPDetails.style.borderBottom = "3px dashed #000";
 				createPDetails.style.marginBottom = "5px";
 			}
 			i++;
 		}
 	}
+	#searchField() {
+		//search field
+		const searchField = document.createElement("input");
+		searchField.id = "searchField";
+		searchField.type = "text";
+		searchField.placeholder = "Search for a Task";
+		searchField.style.marginTop = "10px";
+		searchField.style.marginBottom = "10px";
+		searchField.style.width = "100%";
+		searchField.style.height = "40px";
+		//submit button
+		const submitButton = document.createElement("button");
+		submitButton.id = "submitSearch";
+		submitButton.textContent = "Search";
+		submitButton.type = "submit";
+		submitButton.style.marginTop = "10px";
+		submitButton.style.marginBottom = "10px";
+		submitButton.style.width = "100%";
+		submitButton.style.height = "40px";
+		submitButton.style.border = "2px dotted #ffa200";
+		submitButton.style.borderRadius = "9px 9px";
+
+		document.querySelector("#Content").appendChild(searchField);
+		document.querySelector("#Content").appendChild(submitButton);
+	}
+	#search(searchLogic) {
+		const searchTerm = document.querySelector("#searchField");
+		const submitSearch = document.querySelector("#submitSearch");
+
+		const handleSearch = () => {
+			clearTimeout(this.#debounceTimer);
+
+			this.#debounceTimer = setTimeout(() => {
+				const searchValue = searchTerm.value;
+				const filteredResult = searchLogic.searchTask(searchValue);
+
+				if (filteredResult.length > 0) {
+					document.querySelector("#Content").innerHTML = "";
+					this.#searchField();
+					this.#search(searchLogic);
+					this.#createLayerDiv(filteredResult);
+					this.#createTask(filteredResult);
+				} else {
+					document.querySelector("#Content").innerHTML = "";
+					this.#searchField();
+					this.#search(searchLogic);
+					this.#createLayerDiv(allToDosArray);
+					this.#createTask(allToDosArray);
+				}
+			}, 1000);
+		};
+		searchTerm.addEventListener("input", handleSearch);
+		submitSearch.addEventListener("click", handleSearch);
+	}
 	buildSite() {
 		console.info("Search Task Button clicked!");
 		console.log("Projects: ", allProjectsArray, "and Tasks:", allToDosArray);
+
 		document.querySelector("#Content").innerHTML = "";
-		this.#createLayerDiv();
-		this.#createTask();
+		const searchLogic = new ToDoSorter();
+		this.#searchField();
+		this.#createLayerDiv(allToDosArray);
+		this.#createTask(allToDosArray);
+		this.#search(searchLogic);
 	}
 }

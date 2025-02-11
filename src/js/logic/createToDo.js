@@ -12,8 +12,8 @@ export class CreateTodo {
 		checklist,
 		project
 	) {
-		if (typeof checklist !== "boolean" && checklist === null) {
-			console.error("Checklist must be a boolean");
+		if (typeof checklist !== "boolean" && checklist !== null) {
+			console.error("Checklist must be a boolean or null");
 			return false;
 		}
 		if (

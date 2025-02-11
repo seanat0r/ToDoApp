@@ -15,8 +15,11 @@ import {
 	deleteLocalStorage,
 } from "./js/logic/saveToDoInLocalStorage.js";
 // Importing JS-DOM
-import { AddTask as changeSiteToAddTask, SearchTask as changeSiteSearchTask } from "./js/DOM/changeSite.js";
-import {createNewTaskUILogic } from "./js/DOM/createNewTask.js"
+import {
+	AddTask as changeSiteToAddTask,
+	SearchTask as changeSiteSearchTask,
+} from "./js/DOM/changeSite.js";
+import { createNewTaskUILogic } from "./js/DOM/createNewTask.js";
 
 const addTaskInstance = new changeSiteToAddTask();
 const searchTaskInstance = new changeSiteSearchTask();
@@ -32,41 +35,45 @@ function changeSite() {
 		console.log(clickedElement);
 
 		switch (clickedElement.id) {
-
-			//TODO: REWRITE THE CODE! -> case: "addTask"
 			case "addTask":
 				console.log("Add Task Button clicked!");
 				addTaskInstance.buildSite();
 
-				// Warte auf den Submit-Klick
+				//setTimeout to wait for the site to be build
 				setTimeout(() => {
 					const submitButton = document.querySelector("#submitTask");
 					if (!submitButton) {
-						console.error("Submit-Button nicht gefunden!");
+						console.error("No submit Button found!");
 						return;
 					}
+					submitButton.addEventListener(
+						"click",
+						(event) => {
+							event.preventDefault();
+							console.log("Submit Button clicked!");
+							creatNewTask.proccess();
+							const formValue = creatNewTask.getExportValue();
 
-					submitButton.addEventListener("click", (event) => {
-						event.preventDefault(); // Verhindert das Neuladen der Seite
-						console.log("Submit button clicked!");
-
-						creatNewTask.proccess(); // Jetzt wird das Formular verarbeitet
-						const formValue = creatNewTask.getExportValue();
-
-						if (!formValue) {
-							console.error("Error: formValue is null!");
-							return;
-						}
-
-						console.info("Form Value:", formValue);
-						settingAddTask(formValue);
-					}, { once: true }); // Event-Listener nur einmal hinzufügen
-				}, 100); // Kurze Verzögerung, um sicherzustellen, dass die Seite geladen ist
+							if (!formValue) {
+								console.error("No form value found!" + formValue);
+								return;
+							}
+							console.info("Form Value: ", formValue);
+							settingAddTask(formValue);
+							updateLocalStorage();
+						},
+						{ once: true }
+						
+					);
+					
+				}, 100);
 				
 				break;
-				case "searchTask":
-					searchTaskInstance.buildSite();
-					break;
+
+			case "searchTask":
+				getLocalSTorage();
+				searchTaskInstance.buildSite();
+				break;
 
 			default:
 				console.log("No Btn clicked");
@@ -100,7 +107,6 @@ function settingChangeCompletedTask() {
 }
 
 changeSite();
-
 
 //settingAddTask();
 //settingChangeCompletedTask();

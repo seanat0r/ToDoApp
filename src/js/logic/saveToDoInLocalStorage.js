@@ -6,6 +6,8 @@ let keyProjects = "keyProjects";
 function saveToLocalStorage() {
 	localStorage.setItem(keyToDo, JSON.stringify(allToDosArray) || []);
 	localStorage.setItem(keyProjects, JSON.stringify(allProjectsArray) || []);
+	console.info("LocalStorage updated!");
+	console.info("allToDosArray: ", allToDosArray);
 }
 
 function clearLocalStorage() {
@@ -35,6 +37,7 @@ function loadFromLocalStorage() {
 }
 
 export function updateLocalStorage() {
+	console.info("User updated LocalStorage!");
     saveToLocalStorage();
 }
 export function getLocalSTorage() {

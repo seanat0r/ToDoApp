@@ -32,8 +32,10 @@ export class createNewTaskUILogic {
 			}
 		}
 		function getRadioValue(input) {
+			let selected = false;
 			input.forEach((radio) => {
 				if (radio.checked) {
+					selected = true;
 					if (radio.id === "done0") {
 						formatedValue.push(true);
 					} else if (radio.id === "done1") {
@@ -44,11 +46,13 @@ export class createNewTaskUILogic {
 						formatedValue.push("yellow");
 					} else if (radio.id === "priority2") {
 						formatedValue.push("red");
-					} else {
-						formatedValue.push(null);
 					}
 				}
+				
 			});
+			if (!selected) {
+				formatedValue.push(null);
+			}
 		}
 		function getNewDate(input) {
 			if (!input.value) {
@@ -109,45 +113,36 @@ export class createNewTaskUILogic {
 				}
 			}
 
-			function validRadio(radioSelector) {
-				let checked = false;
-				radioSelector.forEach((radio) => {
-					if (radio.checked) {
-						checked = true;
-					}
-				});
-				isValid.push(checked ? true : false);
+			function validRadio() {
+				isValid.push(true);
 			}
 
-			validTitle();
-			validDueDate();
-			validTextOrTextarea(descriptionValue);
-			validRadio(priorityRadios);
-			validRadio(doneRadio);
-			validTextOrTextarea(notesValue);
-			validTextOrTextarea(projectValue);
+			validTitle(); //1
+			validDueDate(); //2
+			validTextOrTextarea(descriptionValue); //3
+			validRadio(); //4
+			validRadio(); //5
+			validTextOrTextarea(notesValue); //6
+			validTextOrTextarea(projectValue); //7
 
+			console.log("Form validation: " + isValid);
 			const isTrue = (currentValue) => currentValue === true;
 
 			return isValid.every(isTrue);
 		}
-		document.querySelector("#submitTask").addEventListener("click", (event) => {
-			event.preventDefault();
-			console.log("Submit button clicked!");
-
-			if (validateForm()) {
-				console.log("Form is valid, proceeding...");
-			} else {
-				console.error("Form validation failed!");
-				return;
-			}
-		});
-
+		//! FORM VALIDATION: ERROR
+		if (validateForm()) {
+			console.log("Form is valid, proceeding...");
+		} else {
+			console.error("Form validation failed!");
+			return;
+		}
+		console.log("Form validation is done!");
 		const readyToSend = this.#formating();
 		this.#exportData(readyToSend);
 	}
 	#exportData(value) {
-		console.log("ToDo Value: " + value);
+		console.dir("ToDo Value: " + value);
 		this.#valueReadyToExport = value;
 	}
 	getExportValue() {
@@ -155,6 +150,7 @@ export class createNewTaskUILogic {
 	}
 
 	proccess() {
+		console.log("createNewTask is processing...");
 		if (!this.#check()) {
 			console.error("Form couldn't Load! No action can be made.");
 			return;

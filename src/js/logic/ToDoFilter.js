@@ -4,7 +4,7 @@ import {
 	isWithinInterval,
 	startOfToday,
 } from "../../../node_modules/date-fns/index.cjs";
-import { allToDosArray, allProjectsArray } from "../../index.js";
+import { allToDosArray } from "../../index.js";
 
 export class ToDoSorter {
 	//Allowed to manipulate the orginial array
@@ -64,26 +64,27 @@ export class ToDoSorter {
 	}
 	//Looks for an element, that includes the exact same word or it contains following letters (search for "he" -> "hello" is true)
 	#findElement(element, searchTerm) {
-		element.searchTitle.toLowerCase().includes(searchTerm.toLowerCase());
+		return element.taskTitle.toLowerCase().includes(searchTerm.toLowerCase());
 	}
 	#searchToDosAndProjects(searchValue, searchInArray){
 		return searchInArray.filter((element) => this.#findElement(element, searchValue));
 	}
 
 	searchTask(search) {
+		console.info("Search for: ", search);
 		let searchValue = search;
 		if (typeof searchValue !== "string") {
 			return console.log(
 				"Invalid Searchvalue. SearchValue needs to be a string! Current type: " +
-					typeof searchValue
+				typeof searchValue
 			);
 		}
-		const findValueToDo = this.#searchToDosAndProjects();
-		const findValueProjects = this.#searchToDosAndProjects();
-
-		//Set used for remove duplicats(that have the same reference)
-		const allTaskFound = [...new Set(findValueToDo.concat(findValueProjects))];
-
+		// Search for task (ToDos)
+		const findValueToDo = this.#searchToDosAndProjects(searchValue, allToDosArray);
+	
+		// remove duplicates and return the value
+		const allTaskFound = [...new Set(findValueToDo)];
+	
 		return allTaskFound;
 	}
 }
