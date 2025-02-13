@@ -15,10 +15,21 @@ export class EditTask {
 			function getTaskIndex(element) {
 				const clickedElement = element.target;
 				const idElement = clickedElement.id;
+				const parentElement = clickedElement.closest("h3");
+				console.log("parentElement: ", parentElement);
+
+				//check if the clicked element is the search field or button
 				if (idElement === "searchField" || idElement === "searchButton") {
 					return;
+					//checks if the clicked element has no id, when so it checks if the parent element has an id
+				} else if (!idElement && parentElement?.id) {
+					console.info(
+						"clicked Element has no id, but parent has id; Parent ID: " +
+							parentElement.id
+					);
+					resolve(parentElement.id);
 				}
-				console.log("Clicked Element: " + idElement);
+				console.log("Clicked Element: ", idElement);
 				resolve(idElement);
 			}
 			content.addEventListener("click", getTaskIndex);
@@ -221,10 +232,52 @@ export class EditTask {
 			updateLocalStorage();
 		}
 	}
-	#edit(task) {
-        element.preventDefault();
-        console.log(task)
-    }
+	#edit(element, task) {
+		element.preventDefault();
+		console.log(task.taskDescription);
+		const titleValue = document.querySelector("#inputNumber1");
+		const dueDateValue = document.querySelector("#inputNumber2");
+		const descriptionValue = document.querySelector("#inputNumber3");
+		const selectedPriority = [
+			...document.querySelectorAll('input[name="priority"]'),
+		].find((radio) => radio.checked)?.value;
+		const selectedDone = [
+			...document.querySelectorAll('input[name="done"]'),
+		].find((radio) => radio.checked)?.value;
+		const notesValue = document.querySelector("#inputNumber6");
+		const projectValue = document.querySelector("#inputNumber7");
+		console.log(selectedDone, selectedPriority);
+
+		const taskName = allToDosArray.find((obj) => obj.taskTitle === task);
+		console.log("TaskName: ", taskName);
+
+		if (!taskName) {
+			console.error("No task found!");
+			return;
+		}
+
+		titleValue
+			? (taskName.taskTitle = titleValue.value)
+			: console.error("No title found!");
+		dueDateValue
+			? (taskName.taskDueDate = dueDateValue.value)
+			: (taskName.taskDueDate = null);
+		descriptionValue
+			? (taskName.taskDescription = descriptionValue.value)
+			: (taskName.taskDescription = null);
+		selectedPriority
+			? (taskName.taskPriority = selectedPriority.value)
+			: (taskName.taskPriority = null);
+		selectedDone
+			? (taskName.taskChecklist = selectedDone.value)
+			: (taskName.taskChecklist = null);
+		notesValue
+			? (taskName.taskNotes = notesValue.value)
+			: (taskName.taskNotes = null);
+		projectValue
+			? (taskName.projectName = projectValue.value)
+			: (taskName.projectName = null);
+	}
 	#click(task) {
 		console.log("Click method is called!");
 		const editButton = document.querySelector("#submitEditTask");
@@ -235,8 +288,11 @@ export class EditTask {
 			deleteButton.addEventListener("click", () => this.#delte());
 		}
 		if (editButton) {
-            console.log("Edit Button found!");
-            editButton.addEventListener("click", (element) => this.#edit(task));
+			console.log("Edit Button found!");
+			editButton.addEventListener("click", (element) => {
+				this.#edit(element, task);
+				updateLocalStorage();
+			});
 		}
 	}
 	//TODO: Implement the edit function
@@ -246,7 +302,7 @@ export class EditTask {
 		const inetervalID = setInterval(() => {
 			console.info("isInEditorMode: " + this.#isInEditorMode);
 			if (this.#isInEditorMode) {
-                const task = document.querySelector("#inputNumber1").value;;
+				const task = document.querySelector("#inputNumber1").value;
 				this.#click(task);
 			}
 			if (this.#isInEditorMode) {
