@@ -294,15 +294,19 @@ export class SearchTask {
 		searchTerm.addEventListener("input", handleSearch);
 		submitSearch.addEventListener("click", handleSearch);
 	}
-	buildSite() {
+	buildSite(whichArray, withSearch) {
 		console.info("Search Task Button clicked!");
-		console.log("Projects: ", allProjectsArray, "and Tasks:", allToDosArray);
+		console.log("Projects: ", allProjectsArray, "and Tasks:", whichArray);
 
 		document.querySelector("#Content").innerHTML = "";
 		const searchLogic = new ToDoSorter();
-		this.#searchField();
-		this.#createLayerDiv(allToDosArray);
-		this.#createTask(allToDosArray);
-		this.#search(searchLogic);
+		if (withSearch) {
+			this.#searchField();
+		}
+		this.#createLayerDiv(whichArray);
+		this.#createTask(whichArray);
+		if (withSearch) {
+			this.#search(searchLogic);
+		}
 	}
 }

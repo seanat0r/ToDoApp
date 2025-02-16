@@ -14,6 +14,7 @@ import {
 	getLocalSTorage,
 	deleteLocalStorage,
 } from "./js/logic/saveToDoInLocalStorage.js";
+import { ToDoSorter } from "./js/logic/ToDoFilter.js";
 //* Importing JS-DOM
 import {
 	AddTask as changeSiteToAddTask,
@@ -27,6 +28,7 @@ const addTaskInstance = new changeSiteToAddTask();
 const searchTaskInstance = new changeSiteSearchTask();
 const creatNewTask = new createNewTaskUILogic();
 const editTask = new EditTask();
+const toDoSorter = new ToDoSorter();
 
 export const allToDosArray = [];
 export const allProjectsArray = [];
@@ -39,6 +41,11 @@ function changeSite() {
 
 		switch (clickedElement.id) {
 			case "addTask":
+				if (localStorage.length === 0) { 
+					console.info("No LocalStorage found!");
+				} else { 
+					getLocalSTorage();
+				}
 				console.log("Add Task Button clicked!");
 				addTaskInstance.buildSite();
 
@@ -75,7 +82,7 @@ function changeSite() {
 
 			case "searchTask":
 				getLocalSTorage();
-				searchTaskInstance.buildSite();
+				searchTaskInstance.buildSite(allToDosArray, true);
 				setTimeout(() => {
 					editTask.proccess();
 					setTimeout(() => {
@@ -84,7 +91,12 @@ function changeSite() {
 					
 				}, 100);
 				break;
-
+			
+			case "dueTodayTask":
+				getLocalSTorage();
+				const today = toDoSorter.todaySorter(allToDosArray);
+				console.log("Today: ", today);
+				searchTaskInstance.buildSite(today, false);
 			default:
 				console.log("No Btn clicked");
 				break;

@@ -232,6 +232,28 @@ export class EditTask {
 			updateLocalStorage();
 		}
 	}
+	#selectRadioValue(radio) {
+		if (radio) {
+			console.log("Priority: ", radio);
+			const label = document.querySelector(`label[for="${radio.id}"]`);
+			const forValue = label ? label.getAttribute("for") : null;
+			console.log("ForValue: ", forValue);
+
+			if (forValue === "priority0") {
+				return "green";
+			} else if (forValue === "priority1") {
+				return "yellow";
+			} else if (forValue === "priority2") {
+				return "red";
+			} else if (forValue === "done0") {
+				return true;
+			} else if (forValue === "done1") {
+				return false;
+			} else {
+				return null;
+			}
+		}
+	}
 	#edit(element, task) {
 		element.preventDefault();
 		console.log(task.taskDescription);
@@ -240,10 +262,10 @@ export class EditTask {
 		const descriptionValue = document.querySelector("#inputNumber3");
 		const selectedPriority = [
 			...document.querySelectorAll('input[name="priority"]'),
-		].find((radio) => radio.checked)?.value;
+		].find((radio) => radio.checked);
 		const selectedDone = [
 			...document.querySelectorAll('input[name="done"]'),
-		].find((radio) => radio.checked)?.value;
+		].find((radio) => radio.checked);
 		const notesValue = document.querySelector("#inputNumber6");
 		const projectValue = document.querySelector("#inputNumber7");
 		console.log(selectedDone, selectedPriority);
@@ -255,6 +277,13 @@ export class EditTask {
 			console.error("No task found!");
 			return;
 		}
+		console.log("TaskChecklist: ", selectedDone);
+
+		const selectedPriorityValue = this.#selectRadioValue(selectedPriority);
+		console.log("priority Value: ", selectedPriorityValue);
+
+		const selectedDoneValue = this.#selectRadioValue(selectedDone);
+		console.log("Done Value: ", selectedDoneValue);
 
 		titleValue
 			? (taskName.taskTitle = titleValue.value)
@@ -266,17 +295,16 @@ export class EditTask {
 			? (taskName.taskDescription = descriptionValue.value)
 			: (taskName.taskDescription = null);
 		selectedPriority
-			? (taskName.taskPriority = selectedPriority.value)
+			? (taskName.taskPriority = selectedPriorityValue)
 			: (taskName.taskPriority = null);
-		selectedDone
-			? (taskName.taskChecklist = selectedDone.value)
-			: (taskName.taskChecklist = null);
+		taskName.taskChecklist =
+			typeof selectedDoneValue === "boolean" ? selectedDoneValue : null;
 		notesValue
 			? (taskName.taskNotes = notesValue.value)
 			: (taskName.taskNotes = null);
 		projectValue
-			? (taskName.projectName = projectValue.value)
-			: (taskName.projectName = null);
+			? (taskName.taskProjectName = projectValue.value)
+			: (taskName.taskProjectName = null);
 	}
 	#click(task) {
 		console.log("Click method is called!");
