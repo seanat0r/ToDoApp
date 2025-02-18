@@ -3,6 +3,7 @@ import {
 	addDays,
 	isWithinInterval,
 	startOfToday,
+	parseISO,
 } from "../../../node_modules/date-fns/index.cjs";
 import { allToDosArray } from "../../index.js";
 
@@ -40,10 +41,12 @@ export class ToDoSorter {
 	//Not allowed to manipulate the orginial array Not
 	upCommingSorter(array) {
 		const startDay = startOfToday();
-		const endDay = addDays(startDay, 7);
+		const endDay = addDays(startDay, 8);
 		const upComming = array.filter((element) => {
+			console.log("Element: ", element);
 			let taskDay = element.taskDueDate;
 			if (!(taskDay instanceof Date)) {
+				if (!taskDay) return false;
 				taskDay = parseISO(taskDay);
 			}
 			return isWithinInterval(taskDay, { start: startDay, end: endDay });

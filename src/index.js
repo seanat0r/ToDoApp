@@ -22,7 +22,6 @@ import {
 } from "./js/DOM/changeSite.js";
 import { createNewTaskUILogic } from "./js/DOM/createNewTask.js";
 import { EditTask } from "./js/DOM/editTask.js";
-import { set } from "date-fns/set";
 
 const addTaskInstance = new changeSiteToAddTask();
 const searchTaskInstance = new changeSiteSearchTask();
@@ -41,9 +40,9 @@ function changeSite() {
 
 		switch (clickedElement.id) {
 			case "addTask":
-				if (localStorage.length === 0) { 
+				if (localStorage.length === 0) {
 					console.info("No LocalStorage found!");
-				} else { 
+				} else {
 					getLocalSTorage();
 				}
 				console.log("Add Task Button clicked!");
@@ -73,11 +72,9 @@ function changeSite() {
 							updateLocalStorage();
 						},
 						{ once: true }
-						
 					);
-					
 				}, 100);
-				
+
 				break;
 
 			case "searchTask":
@@ -88,20 +85,85 @@ function changeSite() {
 					setTimeout(() => {
 						editTask.sendProccess();
 					}, 100);
-					
 				}, 100);
 				break;
-			
+
 			case "dueTodayTask":
 				getLocalSTorage();
 				const today = toDoSorter.todaySorter(allToDosArray);
 				console.log("Today: ", today);
 				searchTaskInstance.buildSite(today, false);
+
+				sendEmail(today);
+
+				setTimeout(() => {
+					editTask.proccess();
+					setTimeout(() => {
+						editTask.sendProccess();
+					}, 100);
+				}, 100);
+				break;
+
+			case "upcommingTask":
+				getLocalSTorage();
+				const upComming = toDoSorter.upCommingSorter(allToDosArray);
+				console.log("Next 7 Days: ", upComming);
+				searchTaskInstance.buildSite(upComming, false);
+				setTimeout(() => {
+					editTask.proccess();
+					setTimeout(() => {
+						editTask.sendProccess();
+					}, 100);
+				}, 100);
+				break;
+
+			case "colorTask":
+				const colorTask = toDoSorter.priorityColorSorter(allToDosArray);
+				console.log("Color: ", colorTask);
+				searchTaskInstance.buildSite(colorTask, false);
+				setTimeout(() => {
+					editTask.proccess();
+					setTimeout(() => {
+						editTask.sendProccess();
+					}, 100);
+				}, 100);
+				break;
+
 			default:
 				console.log("No Btn clicked");
 				break;
 		}
 	});
+}
+
+//*Send E-Mail
+async function sendEmail(today) {
+    const taskList = today.map((task) => `- ${task.taskTitle}`).join("\n");
+	console.log("Task to send mail: ", taskList);
+
+    const response = await fetch("http://localhost:8080/send-email", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            subject: "ToDo today schedule",
+            text: `Your ToDo today is:\n${taskList}`,
+        }),
+    });
+
+    // Zuerst sicherstellen, dass die Antwort erfolgreich war
+    if (response.ok) {
+        // Jetzt den Body als JSON auslesen, falls der Server eine JSON-Antwort sendet
+        try {
+            const data = await response.json();
+            console.log("E-Mail erfolgreich gesendet!", data);
+        } catch (error) {
+            console.log("Fehler bei der Verarbeitung der Antwort als JSON, aber hier ist der Text:", response.statusText);
+        }
+    } else {
+        console.log("Fehler beim Senden der E-Mail:", response.statusText);
+    }
 }
 
 function createNewProjects(name) {
@@ -130,8 +192,4 @@ function settingChangeCompletedTask() {
 
 changeSite();
 
-//settingAddTask();
-//settingChangeCompletedTask();
-//settingChangeTask();
-//settingDeleteTask();
 console.log("Check, if a task got into the array: " + allToDosArray);
